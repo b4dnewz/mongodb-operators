@@ -1,6 +1,6 @@
-import { BSONTypes } from "../types";
+import { BSONType } from "../types";
 
 export interface ElementOperators {
     $exists?: boolean;
-    $type?: BSONTypes | BSONTypes[];
+    $type?: BSONType | BSONType[];
 }
