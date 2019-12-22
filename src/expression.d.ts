@@ -1,16 +1,35 @@
 import {
     ArrayOperators,
+    ComparisonOperators,
     ElementOperators,
     EvaluationOperators,
     GeoSpatialOperators,
     LogicalOperators,
-    QuerySelectors,
+    TopLevelLogicalOperators,
 } from "./query";
 
-export type Expression<T, V> = QuerySelectors<V> | ElementOperators | GeoSpatialOperators | ArrayOperators<T>;
+/**
+ * Expression that uses only operators as keys
+ */
+export type OperatorExpression<T> = ComparisonOperators
+    | ElementOperators
+    | GeoSpatialOperators
+    | ArrayOperators<T>
+    | LogicalOperators<T>;
 
+/**
+ * Expression that can be assigned to a interface field
+ */
 export type FieldExpression<T> = {
-    [K in keyof T]?: T[K] | Expression<T, T[K]>;
+    [K in keyof T]?: T[K] | OperatorExpression<T>;
 };
 
-export type RootExpression<T> = Pick<LogicalOperators<T>, "$and"> & EvaluationOperators<T>;
+/**
+ * Generic expression that can contain both fields and operators
+ */
+export type Expression<T> = FieldExpression<T> & OperatorExpression<T>;
+
+/**
+ * Top level expression
+ */
+export type RootExpression<T> = FieldExpression<T> & TopLevelLogicalOperators<T> & EvaluationOperators<T>;

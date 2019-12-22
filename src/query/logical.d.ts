@@ -1,8 +1,10 @@
-import { FieldExpression } from "../expression";
+import { Expression, OperatorExpression } from "../expression";
 
 export interface LogicalOperators<T> {
-    $and?: Array<FieldExpression<T>>;
-    $not?: FieldExpression<T>;
-    $or?: Array<FieldExpression<T>>;
-    $nor?: Array<FieldExpression<T>>;
+    $not?: OperatorExpression<T>;
+    $and?: Array<Expression<T>>;
+    $or?: Array<Expression<T>>;
+    $nor?: Array<Expression<T>>;
 }
+
+export type TopLevelLogicalOperators<T> = Omit<LogicalOperators<T>, "$not">;
